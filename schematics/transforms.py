@@ -3,7 +3,7 @@
 import collections
 import itertools
 
-from six import iteritems
+from six import iteritems, string_types
 
 from .exceptions import ConversionError, ModelConversionError, ValidationError
 from .datastructures import OrderedDict
@@ -30,6 +30,19 @@ except:
 # Transform Loops
 ###
 
+
+def _is_empty(field_value):
+    if field_value is None:
+        return True
+
+    if isinstance(field_value, string_types) and \
+        len(field_value.strip()) == 0:
+        return True
+
+    return False
+
+
+    if isinstance(field_value, (str, unicode))
 def import_loop(cls, instance_or_dict, field_converter, context=None,
                 partial=False, strict=False, mapping=None):
     """
@@ -97,6 +110,9 @@ def import_loop(cls, instance_or_dict, field_converter, context=None,
             raw_value = field.default
 
         try:
+            if field.allow_empty and _is_empty(raw_value):
+                continue
+
             if raw_value is None:
                 if field.required and not partial:
                     errors[serialized_field_name] = [field.messages['required']]

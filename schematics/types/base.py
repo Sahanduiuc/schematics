@@ -165,7 +165,8 @@ class BaseType(TypeMeta('BaseTypeBase', (object, ), {})):
         class. A metaclass will merge all the `MESSAGES` and override the
         resulting dict with instance level `messages` and assign to
         `self.messages`.
-
+    :param allow_empty:
+        Marks that this field can be empty.  Default: False.
     """
 
     MESSAGES = {
@@ -175,9 +176,10 @@ class BaseType(TypeMeta('BaseTypeBase', (object, ), {})):
 
     def __init__(self, required=False, default=None, serialized_name=None,
                  choices=None, validators=None, deserialize_from=None,
-                 serialize_when_none=None, messages=None):
+                 serialize_when_none=None, messages=None, allow_empty=False):
         super(BaseType, self).__init__()
         self.required = required
+        self.allow_empty = allow_empty
         self._default = default
         self.serialized_name = serialized_name
         if choices and not isinstance(choices, (list, tuple)):
