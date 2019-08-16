@@ -42,7 +42,6 @@ def _is_empty(field_value):
     return False
 
 
-    if isinstance(field_value, (str, unicode))
 def import_loop(cls, instance_or_dict, field_converter, context=None,
                 partial=False, strict=False, mapping=None):
     """
